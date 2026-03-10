@@ -1,5 +1,7 @@
 //COMSC-210-5068, Lab 22, Yang Liu
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
@@ -128,10 +130,48 @@ public:
             delete temp;
         }
     }
+
+    void delete_pos(int position) {
+        if (!head) {
+        cout << "List is empty. Nothing to delete." << endl;
+        return;
+        }
+        if (position < 1) { 
+            cout << "Position must be >= 1." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        for (int i = 1; i < position && temp; ++i) {
+         temp = temp->next;
+        }
+
+        if (!temp) {
+            cout << "Position exceeds list size. Node not deleted." << endl;
+            return;
+        }
+
+        if (temp->prev) {
+            temp->prev->next = temp->next;
+        } else {
+            head = temp->next;
+        }
+
+        if (temp->next) {
+            temp->next->prev = temp->prev;
+        } else {
+            tail = temp->prev;
+        }
+
+        delete temp;
+
+    }
+
 };
 
 // Driver program
 int main() {
+    srand(time(0));
     DoublyLinkedList list;
     int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
 
@@ -142,6 +182,12 @@ int main() {
 
     cout << "List backward: ";
     list.print_reverse();
+
+    //Testing delete_pos
+    int pos = size / 2;
+    cout << "After delete_pos(" << pos << "): ";
+    list.delete_pos(pos);
+    list.print();
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
