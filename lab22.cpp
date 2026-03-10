@@ -199,6 +199,36 @@ public:
         delete temp;
     }
 
+    //Get the first value for testing delete_val
+    int get_first() {
+        if (head) return head->data;
+        return -1; 
+    }
+
+    void delete_val(int value) {
+        if (!head) return; 
+
+        Node* temp = head;
+        while (temp && temp->data != value)
+            temp = temp->next;
+
+        if (!temp) return; 
+
+        if (temp->prev) {
+            temp->prev->next = temp->next;
+        } else {
+            head = temp->next;
+        }
+
+        if (temp->next) {
+            temp->next->prev = temp->prev;
+        } else {
+            tail = temp->prev;
+        }
+
+        delete temp;
+    }
+
 };
 
 // Driver program
@@ -230,6 +260,14 @@ int main() {
     cout << "After pop_back(): ";
     list.pop_back();
     list.print();
+
+    //Testing delete_val
+    int val = list.get_first();
+    if (val != -1) {
+        cout << "After delete_val(" << val << "): ";
+        list.delete_val(val);
+        list.print();
+    }
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
