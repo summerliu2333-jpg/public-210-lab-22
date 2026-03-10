@@ -167,6 +167,38 @@ public:
 
     }
 
+    void pop_front() {
+        if (!head) {
+            cout << "List is empty. Nothing to pop." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        head = head->next;
+        if (head) {
+            head->prev = nullptr;
+        } else {
+            tail = nullptr;
+        }
+        delete temp;
+    }
+
+    void pop_back() {
+        if (!tail) {
+            cout << "List is empty. Nothing to pop." << endl;
+            return;
+        }
+
+        Node* temp = tail;
+        tail = tail->prev;
+        if (tail) {
+            tail->next = nullptr;
+        } else {
+            head = nullptr;
+        }
+        delete temp;
+    }
+
 };
 
 // Driver program
@@ -187,6 +219,16 @@ int main() {
     int pos = size / 2;
     cout << "After delete_pos(" << pos << "): ";
     list.delete_pos(pos);
+    list.print();
+
+    //Testing pop_front
+    cout << "After pop_front(): ";
+    list.pop_front();
+    list.print();
+
+    //Tesing pop_back
+    cout << "After pop_back(): ";
+    list.pop_back();
     list.print();
 
     cout << "Deleting list, then trying to print.\n";
